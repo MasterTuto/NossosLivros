@@ -10,25 +10,25 @@ import (
 
 type Loan struct {
 	gorm.Model
-	storedBook            books.Stored
-	loaner                users.User
-	loanTime              time.Time
-	returnDate            time.Time
-	bookRate              float64
-	bookRateDescription   string
-	loanerRate            float64
-	loanerRateDescription string
+	StoredBook            books.Stored `json:"storedBook"`
+	Loaner                users.User   `json:"loander"`
+	LoanTime              time.Time    `json:"loanTime"`
+	ReturnDate            time.Time    `json:"returnDate"`
+	BookRate              float64      `json:"bookRate"`
+	BookRateDescription   string       `json:"bookRateDescription"`
+	LoanerRate            float64      `json:"loanerRate"`
+	LoanerRateDescription string       `json:"loanerRateDescription"`
 }
 
 func New(storedBook books.Stored, loaner users.User) *Loan {
 	return &Loan{
-		storedBook:            storedBook,
-		loaner:                loaner,
-		loanTime:              time.Now(),
-		returnDate:            time.Time{},
-		bookRate:              0,
-		bookRateDescription:   "",
-		loanerRate:            0,
-		loanerRateDescription: "",
+		StoredBook:            storedBook,
+		Loaner:                loaner,
+		LoanTime:              time.Now(),
+		ReturnDate:            time.Time{},
+		BookRate:              0,
+		BookRateDescription:   "",
+		LoanerRate:            0,
+		LoanerRateDescription: "",
 	}
 }

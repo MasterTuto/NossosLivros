@@ -9,28 +9,22 @@ import (
 
 type User struct {
 	gorm.Model
-	name, email, password string
-	finishedLoans         int
-	loanLimit             int
+	Name          string `json:"name"`
+	Email         string `json:"email"`
+	Password      string `json:"password"`
+	FinishedLoans int    `json:"finishedLoans"`
+	LoanLimit     int    `json:"loanLimit"`
 }
 
 func New(name, email, password string) *User {
 	return &User{
-		name:      name,
-		email:     email,
-		loanLimit: 1,
-		password:  fmt.Sprintf("%x", sha256.Sum256([]byte(password))),
+		Name:      name,
+		Email:     email,
+		LoanLimit: 1,
+		Password:  fmt.Sprintf("%x", sha256.Sum256([]byte(password))),
 	}
 }
 
-func (u User) Name() string {
-	return u.name
-}
-
-func (u User) Email() string {
-	return u.email
-}
-
 func (u User) VerifyPassword(password string) bool {
-	return u.password == fmt.Sprintf("%x", sha256.Sum256([]byte(password)))
+	return u.Password == fmt.Sprintf("%x", sha256.Sum256([]byte(password)))
 }

@@ -10,13 +10,13 @@ import (
 type Admin struct {
 	gorm.Model
 
-	user     string
-	password string
+	User     string `json:"user"`
+	Password string `json:"password"`
 }
 
 func New(user, password string) *Admin {
 	return &Admin{
-		user:     user,
-		password: fmt.Sprintf("%x", sha256.Sum256([]byte(password))),
+		User:     user,
+		Password: fmt.Sprintf("%x", sha256.Sum256([]byte(password))),
 	}
 }
