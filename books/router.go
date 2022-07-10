@@ -102,6 +102,10 @@ func removeUserBookRegister(c *gin.Context) {
 	}
 
 	db.Delete(&book)
+
+	c.JSON(http.StatusOK, gin.H{
+		"result": "book removed",
+	})
 }
 
 func registerBookToUser(c *gin.Context) {
