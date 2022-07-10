@@ -28,3 +28,7 @@ func New(name, email, password string) *User {
 func (u User) VerifyPassword(password string) bool {
 	return u.Password == fmt.Sprintf("%x", sha256.Sum256([]byte(password)))
 }
+
+func (u *User) HashPassword() {
+	u.Password = fmt.Sprintf("%x", sha256.Sum256([]byte(u.Password)))
+}
