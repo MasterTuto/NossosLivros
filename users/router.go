@@ -29,6 +29,8 @@ func createUser(c *gin.Context) {
 		})
 	}
 
+	user.HashPassword()
+
 	db.Create(user)
 
 	c.JSON(200, gin.H{
