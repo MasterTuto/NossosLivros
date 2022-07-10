@@ -16,28 +16,32 @@ func createUser(c *gin.Context) {
 		return
 	}
 
-	var user User
+	var user struct {
+		name     string `binding:"required"`
+		email    string `binding:"required"`
+		password string `binding:"required"`
+	}
 
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(400, gin.H{"error": "username, password or username are missing."})
 		return
 	}
 
-	if len(user.Password) < 8 {
+	if len(user.password) < 8 {
 		c.JSON(400, gin.H{
-			"error": "Missing username, email or password",
+			"error": "Wrong password length",
 		})
 	}
 
-	user.HashPassword()
+	newUser := New(user.name, user.email, user.password)
 
-	db.Create(user)
+	db.Create(&newUser)
 
 	c.JSON(200, gin.H{
 		"result": gin.H{
-			"id":       user.ID,
-			"username": user.Name,
-			"email":    user.Email,
+			"id":       newUser.ID,
+			"username": newUser.Name,
+			"email":    newUser.Email,
 		},
 	})
 }
@@ -47,7 +51,7 @@ func logUserIn(c *gin.Context) {
 }
 
 func updateUserData(c *gin.Context) {
-	fmt.Println("Hello, world")
+
 }
 
 func getBooksFromUser(c *gin.Context) {

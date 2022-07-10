@@ -10,8 +10,8 @@ import (
 type Admin struct {
 	gorm.Model
 
-	User     string `json:"user"`
-	Password string `json:"password"`
+	User     string `json:"user" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
 func New(user, password string) *Admin {

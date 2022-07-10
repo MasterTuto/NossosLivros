@@ -9,20 +9,20 @@ import (
 
 type Book struct {
 	gorm.Model
-	Title       string    `json:"title"`
-	Author      string    `json:"author"`
-	Release     time.Time `json:"release"`
-	Description string    `json:"description"`
-	Cover       string    `json:"cover"`
+	Title       string    `json:"title" binding:"required"`
+	Author      string    `json:"author" binding:"required"`
+	Release     time.Time `json:"release" binding:"required"`
+	Description string    `json:"description" binding:"required"`
+	Cover       string    `json:"cover" binding:"required"`
 }
 
 type Stored struct {
 	gorm.Model
-	User          users.User `json:"user"`
-	Book          Book       `json:"book"`
+	User          users.User `json:"user" binding:"required"`
+	Book          Book       `json:"book" binding:"required"`
 	StoredAt      time.Time  `json:"storedAt"`
-	TimesLoaned   int        `json:"timesLoaned"`
-	IsBeingLoaned bool       `json:"isBeingLoaned"`
+	TimesLoaned   int        `json:"timesLoaned" binding:"required"`
+	IsBeingLoaned bool       `json:"isBeingLoaned" binding:"required"`
 }
 
 func New(title, author, description, cover string, release time.Time) *Book {
