@@ -73,10 +73,6 @@ func getBooksFromUser(c *gin.Context) {
 	})
 }
 
-func updateUserBook(c *gin.Context) {
-	fmt.Println("Hello, world")
-}
-
 func removeUserBookRegister(c *gin.Context) {
 	fmt.Println("Hello, world")
 }
@@ -93,7 +89,6 @@ func BooksRouter(r *gin.Engine) {
 	r.DELETE("/books", deleteBook)
 
 	r.GET("/user/:userId/books", getBooksFromUser)
-	r.PATCH("/user/:userId/books/:bookId", updateUserBook)
 	r.DELETE("/user/:userId/books/:bookId", removeUserBookRegister)
 	r.POST("/user/:userId/books", registerBookToUser)
 }
