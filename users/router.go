@@ -118,31 +118,9 @@ func updateUserData(c *gin.Context) {
 	db.Model(&user).Updates(updates)
 }
 
-func getUserLoans(c *gin.Context) {
-	fmt.Println("Hello, world")
-}
-
-func getUserLoanData(c *gin.Context) {
-	fmt.Println("Hello, world")
-}
-
-func lendBook(c *gin.Context) {
-	fmt.Println("Hello, world")
-}
-
-func updateUserLoan(c *gin.Context) {
-	fmt.Println("Hello, world")
-}
-
 func UserRoutes(r *gin.Engine) {
 	r.POST("/user/signup", createUser)
 	r.POST("/user/signin", logUserIn)
 
 	r.PATCH("/user/:userId", updateUserData)
-
-	r.GET("/user/:userId/loans", getUserLoans)
-	r.GET("/user/:userId/loans/:loanId", getUserLoanData)
-	r.POST("/user/:userId/loans", lendBook)
-	r.PATCH("/user/:userId/loans/:loanId", updateUserLoan)
-
 }
