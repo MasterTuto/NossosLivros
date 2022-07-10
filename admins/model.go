@@ -1,6 +1,11 @@
 package admins
 
-import "gorm.io/gorm"
+import (
+	"crypto/sha256"
+	"fmt"
+
+	"gorm.io/gorm"
+)
 
 type Admin struct {
 	gorm.Model
@@ -9,9 +14,9 @@ type Admin struct {
 	password string
 }
 
-func NewAdmin(user, password string) *Admin {
+func New(user, password string) *Admin {
 	return &Admin{
 		user:     user,
-		password: password,
+		password: fmt.Sprintf("%x", sha256.Sum256([]byte(password))),
 	}
 }

@@ -10,7 +10,7 @@ func updateAdminData(c *gin.Context) {
 	c.String(200, "updateAdminData!")
 }
 
-func AdminRouter(r *gin.Engine) {
+func AdminRoutes(r *gin.Engine) {
 	r.POST("/admin/login", loginAdmin)
 	r.PATCH("/admin", updateAdminData)
 }

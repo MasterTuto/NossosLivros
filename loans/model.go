@@ -5,9 +5,11 @@ import (
 
 	"brenocs.dev/nossolivros/books"
 	"brenocs.dev/nossolivros/users"
+	"gorm.io/gorm"
 )
 
 type Loan struct {
+	gorm.Model
 	storedBook            books.Stored
 	loaner                users.User
 	loanTime              time.Time

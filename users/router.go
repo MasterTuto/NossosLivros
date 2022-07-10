@@ -7,7 +7,7 @@ import (
 )
 
 func createUser(c *gin.Context) {
-	fmt.Println("Hello, world")
+	fmt.Println("Create user!")
 }
 
 func logUserIn(c *gin.Context) {
