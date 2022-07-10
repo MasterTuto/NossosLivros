@@ -16,31 +16,26 @@ func createUser(c *gin.Context) {
 		return
 	}
 
-	username, foundUsername := c.Params.Get("username")
-	email, foundEmail := c.Params.Get("email")
-	password, foundPassword := c.Params.Get("password")
+	var user User
 
-	if len(password) < 8 {
-		c.JSON(400, gin.H{
-			"error": "Missing username, email or password",
-		})
-	}
-
-	if !foundUsername || !foundEmail || !foundPassword {
-		c.JSON(400, gin.H{
-			"error": "Missing username, email or password",
-		})
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(400, gin.H{"error": "username, password or username are missing."})
 		return
 	}
 
-	user := New(username, email, password)
+	if len(user.Password) < 8 {
+		c.JSON(400, gin.H{
+			"error": "Missing username, email or password",
+		})
+	}
+
 	db.Create(user)
 
 	c.JSON(200, gin.H{
 		"result": gin.H{
 			"id":       user.ID,
-			"username": username,
-			"email":    email,
+			"username": user.Name,
+			"email":    user.Email,
 		},
 	})
 }
