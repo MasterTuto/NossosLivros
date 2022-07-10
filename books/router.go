@@ -74,7 +74,34 @@ func getBooksFromUser(c *gin.Context) {
 }
 
 func removeUserBookRegister(c *gin.Context) {
-	fmt.Println("Hello, world")
+	readDb, found := c.Get("db")
+	db := readDb.(*gorm.DB)
+
+	if !found {
+		c.JSON(500, gin.H{"error": "could not get db"})
+		return
+	}
+
+	userId := c.Param("userId")
+	bookId := c.Param("bookId")
+
+	var user users.User
+	db.Take(&user, userId)
+
+	if (user == users.User{}) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "user not found"})
+		return
+	}
+
+	var book Stored
+	db.Take(&book, bookId)
+
+	if (book == Stored{}) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "book not found"})
+		return
+	}
+
+	db.Delete(&book)
 }
 
 func registerBookToUser(c *gin.Context) {
