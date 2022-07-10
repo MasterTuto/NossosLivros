@@ -4,10 +4,45 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func createUser(c *gin.Context) {
-	fmt.Println("Create user!")
+	varDb, found := c.Get("db")
+	var db *gorm.DB = varDb.(*gorm.DB)
+
+	if !found {
+		c.JSON(500, gin.H{"error": "could not get db"})
+		return
+	}
+
+	username, foundUsername := c.Params.Get("username")
+	email, foundEmail := c.Params.Get("email")
+	password, foundPassword := c.Params.Get("password")
+
+	if len(password) < 8 {
+		c.JSON(400, gin.H{
+			"error": "Missing username, email or password",
+		})
+	}
+
+	if !foundUsername || !foundEmail || !foundPassword {
+		c.JSON(400, gin.H{
+			"error": "Missing username, email or password",
+		})
+		return
+	}
+
+	user := New(username, email, password)
+	db.Create(user)
+
+	c.JSON(200, gin.H{
+		"result": gin.H{
+			"id":       user.ID,
+			"username": username,
+			"email":    email,
+		},
+	})
 }
 
 func logUserIn(c *gin.Context) {
