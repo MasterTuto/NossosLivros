@@ -105,7 +105,58 @@ func removeUserBookRegister(c *gin.Context) {
 }
 
 func registerBookToUser(c *gin.Context) {
-	fmt.Println("Hello, world")
+	readDb, found := c.Get("db")
+
+	if !found {
+		c.JSON(500, gin.H{"error": "could not get db"})
+		return
+	}
+
+	db := readDb.(*gorm.DB)
+
+	userId := c.Param("userId")
+
+	var user users.User
+
+	db.Take(&user, userId)
+
+	if (user == users.User{}) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "user not found"})
+		return
+	}
+
+	var storedBookRequest struct {
+		bookId int `binding:"required"`
+	}
+
+	storedBookRequest.bookId = -1
+
+	if err := c.ShouldBindJSON(&storedBookRequest); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if storedBookRequest.bookId == -1 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "bookId not found"})
+		return
+	}
+
+	var book Book
+
+	db.Take(&book, storedBookRequest.bookId)
+
+	if (book == Book{}) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "book not found"})
+		return
+	}
+
+	storedBook := NewStored(book, user)
+
+	db.Create(&storedBook)
+
+	c.JSON(http.StatusOK, gin.H{
+		"result": storedBook,
+	})
 }
 
 func BooksRouter(r *gin.Engine) {
