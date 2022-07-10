@@ -63,7 +63,7 @@ func getBooksFromUser(c *gin.Context) {
 
 	var offset = limitNumber * (pageNumber - 1)
 
-	var books []Book
+	var books []Stored
 	var total int64
 	db.Where("user_id = ?", user.ID).Limit(limitNumber).Offset(offset).Find(&books).Count(&total)
 
